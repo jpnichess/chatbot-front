@@ -3,7 +3,7 @@ import { auth } from "./Components/Firebase/FirebaseConfig";
 import type { User } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import Header from "./Components/Header/Header";
-// import Chat from "./Components/Chat/Chat";
+import Chat from "./Components/Chat/Chat";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -18,7 +18,8 @@ function App() {
       <Header user={user} />
    
       <main>
-        {/* <Chat  /> */}
+        <Chat  />
+        
       </main>
     </>
   );

@@ -1,4 +1,4 @@
-import './header.scss';
+import "./header.scss";
 
 import type { User } from "firebase/auth";
 import Login from "../Auth/Login";
@@ -20,7 +20,7 @@ function Header({ user }: HeaderProps) {
           <IoReorderThree />
         </button>
 
-        <h1 className="title">Chat FDP</h1>
+        <h1 className="title">Chat JP</h1>
 
         <div className="login-section">
           {user ? <Logout user={user} /> : <Login />}
@@ -37,11 +37,12 @@ function Header({ user }: HeaderProps) {
       </div>
 
       {openMenu && (
-        <div className="overlay" onClick={() => setOpenMenu(false)} />
+        <div>
+          <div className="overlay" onClick={() => setOpenMenu(false)} />
+        </div>
       )}
     </header>
   );
 }
-
 
 export default Header;

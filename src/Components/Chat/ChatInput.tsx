@@ -1,34 +1,53 @@
-// src/components/ChatInput.tsx
-import { useState } from "react";
-import type { FormEvent } from "react";
+import { useState, useRef, useEffect } from "react";
 
-interface ChatInputProps {
-  onSend: (message: string) => void;
-}
-
-function ChatInput({ onSend }: ChatInputProps) {
+function ChatInput({ onSend }: { onSend: (msg: string) => void }) {
   const [input, setInput] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    onSend(input.trim());
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
+    }
+  }, [input]);
+
+  const handleSubmit = () => {
+    const trimmed = input.trim();
+    if (!trimmed) return false;
+
+    onSend(trimmed);
     setInput("");
+    return true;
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  const onFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="user-form">
-      <input
+    <form onSubmit={onFormSubmit} className="user-form">
+      <textarea
+        ref={textareaRef}
         className="user-input"
-        type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Digite sua mensagem..."
+        rows={1}
+        onKeyDown={handleKeyDown}
       />
-      <button type="submit" className="send-button">Enviar</button>
+      <button type="submit" className="send-button">
+        Enviar
+      </button>
     </form>
   );
 }
 
 export default ChatInput;
-
