@@ -1,0 +1,23 @@
+@use "../../styles/variables" as vars;
+
+.chat-container{
+  margin-top: 30rem;
+  margin-left: 50%;
+}
+
+
+.user-input {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.send-button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: #ff79c6;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
