@@ -5,6 +5,7 @@ import Login from "../Auth/Login";
 import Logout from "../Auth/Logout";
 import { useState } from "react";
 import { IoReorderThree } from "react-icons/io5";
+import ChatHistory from "./ChatHistory";
 
 interface HeaderProps {
   user: User | null;
@@ -29,11 +30,7 @@ function Header({ user }: HeaderProps) {
 
       {/* Sidebar */}
       <div className={`sidebar ${openMenu ? "open" : ""}`}>
-        <div id="top-menu">
-          <button className="close-button" onClick={() => setOpenMenu(false)}>
-            X
-          </button>
-        </div>
+        <ChatHistory />
       </div>
 
       {openMenu && (

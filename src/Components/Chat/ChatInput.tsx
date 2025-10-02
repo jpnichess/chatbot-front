@@ -33,6 +33,7 @@ function ChatInput({ onSend }: { onSend: (msg: string) => void }) {
   };
 
   return (
+    <div className="user-part">
     <form onSubmit={onFormSubmit} className="user-form">
       <textarea
         ref={textareaRef}
@@ -47,6 +48,7 @@ function ChatInput({ onSend }: { onSend: (msg: string) => void }) {
         Enviar
       </button>
     </form>
+    </div>
   );
 }
 

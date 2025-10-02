@@ -1,5 +1,4 @@
 @use "../../styles/variables" as vars;
-@use "./menu";
 
 header {
   position: fixed;
@@ -8,7 +7,7 @@ header {
   width: vars.$w-full;
   height: vars.$header-height;
   z-index: 10;
-  background-color: transparent;
+  background-color: #282a36;
   transition: background-color 0.3s ease;
 
   .header-wrapper {

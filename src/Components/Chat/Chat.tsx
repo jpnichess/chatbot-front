@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ChatInput from "./ChatInput";
+import { auth } from "../Firebase/FirebaseConfig.js";
 import "./chat.scss";
 
 type Message = {
@@ -10,32 +11,45 @@ type Message = {
 
 function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const user = auth.currentUser;
+  const sessionId = user?.uid || "anon";
 
   const handleSend = async (message: string) => {
     const userMsg: Message = { id: Date.now(), text: message, sender: "user" };
     setMessages((prev) => [...prev, userMsg]);
 
+    // Adiciona placeholder para a resposta do bot
+    const botId = Date.now() + 1;
+    setMessages((prev) => [...prev, { id: botId, text: "", sender: "bot" }]);
+
     try {
-      const res = await fetch("http://localhost:3000/chat", {
+      const res = await fetch("http://localhost:3000/stream-chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, sessionId }),
       });
 
-      const data = await res.json();
+      const reader = res.body!.getReader();
+      const decoder = new TextDecoder();
+      let fullText = "";
 
-      // Adiciona a resposta da IA
-      const botMsg: Message = {
-        id: Date.now() + 1,
-        text: data.reply,
-        sender: "bot",
-      };
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-      setMessages((prev) => [...prev, botMsg]);
+        const chunk = decoder.decode(value);
+        fullText += chunk;
+
+        // Atualiza o último bot message com streaming
+        setMessages((prev) =>
+          prev.map((msg) => (msg.id === botId ? { ...msg, text: fullText } : msg))
+        );
+      }
     } catch (error) {
       console.error("Erro na resposta da IA:", error);
+      setMessages((prev) =>
+        prev.map((msg) => (msg.id === botId ? { ...msg, text: "Erro ao gerar resposta." } : msg))
+      );
     }
   };
 
@@ -48,8 +62,9 @@ function Chat() {
           </div>
         ))}
       </div>
-
-      <ChatInput onSend={handleSend} />
+      <div className="user-wraper">
+        <ChatInput onSend={handleSend} />
+      </div>
     </div>
   );
 }
