@@ -1,17 +1,19 @@
 import { auth } from "../Firebase/FirebaseConfig";
 import { signOut, type User } from "firebase/auth";
 import { LogOut } from "lucide-react";
-import './auth.scss';
+import "./auth.scss";
 
 interface LogoutProps {
-  user: User; 
+  user: User;
 }
 
-export default function Logout(LogoutProps) {
+function Logout({ user }: LogoutProps) {
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
-        console.log("Logout realizado!");
+        console.log(
+          `Logout realizado para o usuário: ${user.displayName || user.email}`
+        );
       })
       .catch((error) => {
         console.error("Erro ao fazer logout:", error);
@@ -21,9 +23,10 @@ export default function Logout(LogoutProps) {
   return (
     <div className="auth">
       <button onClick={handleLogout} className="logout_btn">
-        Sair 
-         <LogOut />
+        Sair <LogOut />
       </button>
     </div>
   );
 }
+
+export default Logout;

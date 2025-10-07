@@ -9,6 +9,7 @@ header {
   z-index: 10;
   background-color: #282a36;
   transition: background-color 0.3s ease;
+  border-bottom: 1px solid vars.$light-gray;
 
   .header-wrapper {
     max-width: 100%;
@@ -27,9 +28,10 @@ header {
   border: none;
   background-color: vars.$light-gray;
   cursor: pointer;
-  font-size: 2.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  font-size: 1.6rem;
+  padding: 0.2rem;
+  width: auto;
+  height: 1.8rem;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -40,10 +42,12 @@ header {
 .title {
   color: vars.$white;
   background-color: vars.$light-gray;
-  width: 150px;
+  width: auto;
+  padding: 0.5rem;
   align-items: center;
   display: flex;
-  height: 2.5rem;
+  height: 1.8rem;
   justify-content: center;
   border-radius: vars.$radius-sm;
+  font-size: 1.6rem;
 }

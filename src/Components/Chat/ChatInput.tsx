@@ -1,19 +1,28 @@
 import { useState, useRef, useEffect } from "react";
+import { auth } from "../Firebase/FirebaseConfig.js";
+import "./chatInput.scss";
 
 function ChatInput({ onSend }: { onSend: (msg: string) => void }) {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const user = auth.currentUser;
 
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
     }
   }, [input]);
 
   const handleSubmit = () => {
     const trimmed = input.trim();
     if (!trimmed) return false;
+
+    if (!user) {
+      alert("Entre com sua conta do Google enviar sua pergunta.");
+      return false;
+    }
 
     onSend(trimmed);
     setInput("");
@@ -34,20 +43,20 @@ function ChatInput({ onSend }: { onSend: (msg: string) => void }) {
 
   return (
     <div className="user-part">
-    <form onSubmit={onFormSubmit} className="user-form">
-      <textarea
-        ref={textareaRef}
-        className="user-input"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Digite sua mensagem..."
-        rows={1}
-        onKeyDown={handleKeyDown}
-      />
-      <button type="submit" className="send-button">
-        Enviar
-      </button>
-    </form>
+      <form onSubmit={onFormSubmit} className="user-form">
+        <textarea
+          ref={textareaRef}
+          className="user-input"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Digite sua mensagem..."
+          rows={1}
+          onKeyDown={handleKeyDown}
+        />
+        <button type="submit" className="send-button">
+          Enviar
+        </button>
+      </form>
     </div>
   );
 }

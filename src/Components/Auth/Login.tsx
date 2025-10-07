@@ -1,6 +1,6 @@
 import { auth } from "../Firebase/FirebaseConfig.ts";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import './auth.scss';
+import "./auth.scss";
 
 function Login() {
   const LoginGoogle = async () => {

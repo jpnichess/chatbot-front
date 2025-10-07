@@ -1,24 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChatInput from "./ChatInput";
 import { auth } from "../Firebase/FirebaseConfig.js";
 import "./chat.scss";
 
 type Message = {
-  id: number;
+  id: string | number;
   text: string;
   sender: "user" | "bot";
 };
 
-function Chat() {
+interface APIMessage {
+  id: string;
+  role: "user" | "model";
+  content: string;
+  createdAt: string;
+}
+
+interface ChatProps {
+  conversationId?: string;
+}
+
+export default function Chat({ conversationId }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const user = auth.currentUser;
-  const sessionId = user?.uid || "anon";
+  const sessionId = conversationId || user?.uid || "anon";
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Automatic Scroll
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // History
+  useEffect(() => {
+    async function fetchHistory() {
+      try {
+        const res = await fetch(`http://localhost:3000/history-detail/${sessionId}`);
+        const data: { messages: APIMessage[] } = await res.json();
+
+        const history = data.messages.map((msg) => ({
+          id: msg.id,
+          text: msg.content,
+          sender: msg.role === "user" ? "user" : "bot" as "user" | "bot",
+        }));
+
+        setMessages(history);
+      } catch (err) {
+        console.error("Erro ao carregar histórico:", err);
+      }
+    }
+
+    fetchHistory();
+  }, [sessionId]);
 
   const handleSend = async (message: string) => {
     const userMsg: Message = { id: Date.now(), text: message, sender: "user" };
     setMessages((prev) => [...prev, userMsg]);
 
-    // Adiciona placeholder para a resposta do bot
     const botId = Date.now() + 1;
     setMessages((prev) => [...prev, { id: botId, text: "", sender: "bot" }]);
 
@@ -36,19 +75,17 @@ function Chat() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-
-        const chunk = decoder.decode(value);
-        fullText += chunk;
-
-        // Atualiza o último bot message com streaming
+        fullText += decoder.decode(value);
         setMessages((prev) =>
           prev.map((msg) => (msg.id === botId ? { ...msg, text: fullText } : msg))
         );
       }
-    } catch (error) {
-      console.error("Erro na resposta da IA:", error);
+    } catch (err) {
+      console.error(err);
       setMessages((prev) =>
-        prev.map((msg) => (msg.id === botId ? { ...msg, text: "Erro ao gerar resposta." } : msg))
+        prev.map((msg) =>
+          msg.id === botId ? { ...msg, text: "Erro ao gerar resposta." } : msg
+        )
       );
     }
   };
@@ -61,12 +98,11 @@ function Chat() {
             {msg.text}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
-      <div className="user-wraper">
+      <div className="user-wrapper">
         <ChatInput onSend={handleSend} />
       </div>
     </div>
   );
 }
-
-export default Chat;

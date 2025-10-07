@@ -3,101 +3,51 @@
 .chat-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  width: vars.$w-full;
+  height: 100vh; // garante que ocupe a tela toda
+  color: vars.$white;
+  position: relative;
 }
 
 .chat-messages {
-  width: 100%;
-  margin-top: 5rem;
-  max-height: 400px;
+  flex: 1;
+  width: 40rem;
+  max-width: 100%;
+  margin: 0 auto;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding-right: 0.5rem;
+  gap: 1rem;
+  padding: 5rem 1rem 5rem;
+  scroll-behavior: smooth;
+  z-index: 0;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
 }
 
 .message-card {
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
+  padding: 1rem;
+  border-radius: vars.$radius-lg;
   max-width: 75%;
   word-wrap: break-word;
-  font-size: 1rem;
+  font-size: vars.$font-base;
+  line-height: 1.25;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
   &.user {
-    background-color: #007bff;
-    color: #fff;
+    background-color: vars.$blue;
+    color: vars.$black;
     align-self: flex-end;
+    border-bottom-right-radius: vars.$radius-sm;
   }
 
   &.bot {
-    background-color: #f1f1f1;
-    color: #333;
+    background-color: vars.$light-black;
+    color: vars.$white;
     align-self: flex-start;
+    border-bottom-left-radius: vars.$radius-sm;
   }
-}
-
-.user-form {
-  display: flex;
-  width: 100%;
-  height: 20rem;
-  background-color: transparent;
-  align-items: center;
-  justify-content: center;
-}
-
-.user-part{
-  width: 100%;
-
-}
-
-.user-wraper{
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  align-items: end;
-}
-
-.user-input {
-  flex: 1;
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  width: 100%;
-  min-height: 2.2rem;
-  font-size: 1rem;
-  resize: none;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-  line-height: 1.4;
-  box-sizing: border-box;
-}
-
-textarea {
-  overflow: hidden;
-  max-height: 10rem;
-  border: none;
-}
-
-textarea:focus {
-  outline: none;
-  box-shadow: none;
-  border: none; 
-}
-
-.send-button {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  background-color: vars.$gray;
-  margin-left: 1rem;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
 }

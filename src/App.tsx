@@ -16,10 +16,8 @@ function App() {
   return (
     <>
       <Header user={user} />
-   
       <main>
         <Chat  />
-        
       </main>
     </>
   );
