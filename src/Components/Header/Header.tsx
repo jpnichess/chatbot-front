@@ -50,7 +50,7 @@ export default function Header() {
         <button className="menu-button" onClick={() => setOpenMenu(!openMenu)}>
           <IoReorderThree />
         </button>
-        <h1 className="title">Chat JP</h1>
+        <h1 className="title">Flexah</h1>
         <div className="login-section">
           {currentUser ? <Logout user={currentUser} /> : <Login />}
         </div>
