@@ -1,4 +1,4 @@
-# 🌈 Chatbot — Frontend
+#  Chatbot — Frontend
 
 Interface web para chatbot, construído com **React**, **TypeScript** e **Vite**.  
 Este projeto consome o backend de stream-chat para prover uma experiência de chat com streaming de respostas da IA baseada na API Gemini (Google).
