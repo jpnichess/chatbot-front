@@ -1,7 +1,7 @@
-# 🌈 Flexa AI — Frontend
+# 🌈 Chatbot — Frontend
 
-Interface web para o chatbot **Flexa**, construído com **React**, **TypeScript** e **Vite**.  
-Este projeto consome o backend da Flexa AI para prover uma experiência de chat com streaming de respostas da IA baseada na API Gemini (Google).
+Interface web para chatbot, construído com **React**, **TypeScript** e **Vite**.  
+Este projeto consome o backend de stream-chat para prover uma experiência de chat com streaming de respostas da IA baseada na API Gemini (Google).
 
 ---
 
